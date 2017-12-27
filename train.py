@@ -10,7 +10,6 @@ from keras.layers import AveragePooling2D
 from keras.layers import UpSampling2D, AtrousConvolution2D
 from keras.layers.advanced_activations import LeakyReLU, PReLU
 from keras import backend as K
-from keras.callbacks import EarlyStopping
 
 img_width, img_height = 64, 64
 
@@ -26,7 +25,6 @@ if K.image_data_format() == 'channels_first':
 else:
     input_shape = (img_width, img_height, 3)
     
-early_stopping = EarlyStopping(patience=7, mode='auto')
 
 model = Sequential()
 model.add(Conv2D(10, (5, 5), input_shape=input_shape, activation='relu'))
