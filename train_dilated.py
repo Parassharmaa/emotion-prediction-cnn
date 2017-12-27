@@ -10,6 +10,7 @@ from keras.layers import AveragePooling2D
 from keras.layers import UpSampling2D, AtrousConvolution2D
 from keras.layers.advanced_activations import LeakyReLU, PReLU
 from keras import backend as K
+from keras.callbacks import EarlyStopping
 
 img_width, img_height = 32, 32
 
@@ -17,7 +18,7 @@ train_data_dir = 'data/train'
 validation_data_dir = 'data/validation'
 nb_train_samples = 20000
 nb_validation_samples = 3000
-epochs = 10
+epochs = 150
 batch_size = 64
 
 if K.image_data_format() == 'channels_first':
@@ -25,6 +26,8 @@ if K.image_data_format() == 'channels_first':
 else:
     input_shape = (img_width, img_height, 3)
 
+early_stopping = EarlyStopping(patience=5, mode='auto')
+    
 model = Sequential()
 model.add(Conv2D(10, (5, 5), input_shape=input_shape))
 model.add(LeakyReLU(alpha=.003))
@@ -89,6 +92,7 @@ model.fit_generator(
     steps_per_epoch=nb_train_samples // batch_size,
     epochs=epochs,
     validation_data=validation_generator,
-    validation_steps=nb_validation_samples // batch_size)
+    validation_steps=nb_validation_samples // batch_size,
+    callbacks=[early_stopping])
 
 model.save('models/classifier-dilated-{}.h5'.format(epochs))
