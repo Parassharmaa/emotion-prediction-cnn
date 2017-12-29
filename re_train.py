@@ -8,7 +8,7 @@ train_data_dir = 'data/train'
 validation_data_dir = 'data/validation'
 nb_train_samples = 20000
 nb_validation_samples = 3000
-epochs = 1
+epochs = 800
 batch_size = 32
 
 model_name = sys.argv[1]
